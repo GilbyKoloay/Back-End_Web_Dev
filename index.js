@@ -1,6 +1,7 @@
 const http = require('http');
 const moment = require('moment');
 const about = require('./member.js');
+const users = require('./users.js');
 
 const server = http.createServer((req, res) => {
     res.statusCode= 200;
@@ -13,6 +14,11 @@ const server = http.createServer((req, res) => {
             'Description': "Group Exercise #03",
             'Date': moment().format(),
             'Data': about.data
+        }));
+    }
+    else if(req.url === "/users") {
+        res.write(JSON.stringify({
+            'user': users
         }));
     }
 
