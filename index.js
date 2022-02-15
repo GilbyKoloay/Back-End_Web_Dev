@@ -21,7 +21,11 @@ const server = http.createServer((req, res) => {
             'user': users
         }));
     }
-
+    else {
+        const fs = require('fs');
+        res.write(fs.readFileSync('./index.html'));
+    }
+    
     res.end();
 });
 
