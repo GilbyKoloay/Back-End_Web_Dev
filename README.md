@@ -1,4 +1,4 @@
-## Back-End Web Development Group - Repository
+## Back-End Web Development - Group Repository
 ------
 ### Collaborators:
 ##### Steffano Immanuel Rondonuwu (Head)
