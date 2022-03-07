@@ -15,6 +15,31 @@ app.get('/', (req, res) => {
     `);
 });
 
+// PUT users name
+app.put('/users/:name', (req, res) => {
+    const {name} = req.body;
+    
+    if(users.filter(r => r.name.toLowerCase() === req.params.name.toLowerCase()).length === 0) {
+        res.status(400).send(JSON.stringify({
+            message: "Masukkan data yang akan diubah."
+        }));
+    }
+    else if(name.length < 0 || !name.match(/[0-z]/i)) {
+        res.status(400).send(JSON.stringify({
+            message: "Masukkan data untuk mengubah data yang sudah ada."
+        }));
+    }
+    else {
+        users.forEach(r => {
+            if(r.name.toLowerCase() === req.params.name.toLowerCase()) {
+                r.name = name;
+            }
+        });
+
+        res.send(users);
+    }
+});
+
 // DELETE users name
 app.delete('/users/:name', (req, res) => {
     if(users.filter(r => r.name.toLowerCase() === req.params.name.toLowerCase()).length === 0) {
@@ -34,6 +59,14 @@ app.use((err, req, res, next) => {
     res.status(500).send(JSON.stringify({
         status: 'error',
         message: "terjadi kesalahan pada server."
+    }));
+});
+
+// Routing 404 handling
+app.use((req, res, next) => {
+    res.status(404).send(JSON.stringify({
+        status: 'error',
+        message: "resource tidak ditemukan.",
     }));
 });
 
