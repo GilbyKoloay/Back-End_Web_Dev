@@ -28,7 +28,7 @@ app.delete('/users/:name', (req, res) => {
     }
 });
 
-// Error handling
+// penanganan error
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(500).send(JSON.stringify({
