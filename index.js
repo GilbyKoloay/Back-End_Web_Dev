@@ -53,6 +53,49 @@ app.delete('/users/:name', (req, res) => {
     }
 });
 
+// POST users
+app.post('/users', (req, res) => {
+    const {name} = req.body;
+
+    if(name.length > 0 && name.match(/[0-z]/i)) {
+        if(users.filter(r => r.name.toLowerCase() === name.toLowerCase()).length === 0) {
+            if(users.length === 0)  {
+                id = 1;
+            }
+            else if (users.length === 1) {
+                id = users[0].id + 1;
+            }
+            else {
+                let com = true;
+
+                for(let r=0; r<users.length-1; r++) {
+                    if(users[r].id+1 !== users[r+1].id) {
+                        id = users[r].id + 1;
+                        com = false;
+                        break;
+                    }
+                }
+                
+                if(com) {
+                    id = users.length + 1;
+                }
+            }
+
+            let obj = {
+                id, name
+            };
+            users.splice(id-1, 0, obj);
+        }
+
+        res.send(users);
+    }
+    else {
+        res.status(400).send(JSON.stringify({
+            message: "Masukkan data yang akan diubah."
+        }));
+    }
+});
+
 // penanganan error
 app.use((err, req, res, next) => {
     console.log(err);
