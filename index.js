@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+let users = require('./users');
+
 const app = express();
 const port = 3000;
 app.use(express.urlencoded({extended:true}));
@@ -18,6 +20,7 @@ app.use(cors({
 app.use(morgan('combined'), (req, res, next) => {
     next();
 });
+
 // GET Default
 app.get('/', (req, res) => {
     res.send(`
@@ -28,6 +31,28 @@ app.get('/', (req, res) => {
         <p>Gilby Ezra Albert Koloay</p>
         <p>Stevali Mercella Item</p>
     `);
+});
+
+// GET users
+app.get('/users', (req, res) => {
+    res.send(users);
+});
+
+// GET users name
+app.get('/users/:name', (req, res) => {
+    const data = users.filter(r => r.name.toLowerCase() === req.params.name.toLowerCase());
+
+    if(data.length === 0) {
+        res.send(JSON.stringify({
+            message: "Data user tidak ditemukan."
+        }));
+    }
+    else {
+        res.send(JSON.stringify({
+            id: data[0].id,
+            name: data[0].name,
+        }));
+    }
 });
 
 // PUT users name
