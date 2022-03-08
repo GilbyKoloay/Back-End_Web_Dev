@@ -1,8 +1,23 @@
 const express = require('express');
-
+const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
 const port = 3000;
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
+// CORS Handling
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+
+
+
+// Log using Morgan
+app.use(morgan('combined'), (req, res, next) => {
+    next();
+});
 // GET Default
 app.get('/', (req, res) => {
     res.send(`
